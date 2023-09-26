@@ -1,58 +1,145 @@
 import pandas as pd
 from sodapy import Socrata
+import geopandas as gpd
+from shapely.geometry import Point
+import datetime
+
 
 def fetch_data_from_api(number_of_values=1000000):
     """
-    Fetches data from an API and returns it as a DataFrame.
-    
-    Args:
-        number_of_values (int, optional): The number of values to retrieve from the API. Defaults to 1000000.
-    
-    Returns:
-        pandas.DataFrame or None: The retrieved data as a DataFrame, or None if an error occurs.
-    """
-    try:
-        # Create client and retrieve data from API
-        client = Socrata("data.nasa.gov", None)
-        results = client.get("gh4g-9sfh", limit=number_of_values)
-        
-        # Create DataFrame from API results
-        df = pd.DataFrame.from_records(results)
-        
-        return df
-    
-    except Exception as e:
-        print(f"Error fetching data from API: {e}")
-        return None
-
-def setup_df(df: pd.DataFrame):
-    """
-    A function that takes a pandas DataFrame as input and performs the following operations:
-    - Drops the last two columns of the DataFrame
-    - Extracts the year from the 'year' column by splitting the string on '-' and selecting the first element
-    The modified DataFrame is then returned as the output.
+    Fetches data from an API and returns it as a pandas DataFrame.
 
     Parameters:
-    - df (pd.DataFrame): The input DataFrame
+        number_of_values (int): The number of values to retrieve from the API.
+            Default is 1000000.
 
     Returns:
-    - pd.DataFrame: The modified DataFrame
+        pandas.DataFrame: A DataFrame containing the retrieved data.
     """
-    # Drop the last two columns
-    df = df.iloc[:, :-2]
-    
-    # Extract the year from the timestamp
-    df['year'] = df['year'].str.split('-').str[0]
-    
+    # Create client and retrieve data from API
+    client = Socrata("data.nasa.gov", None)
+    results = client.get("gh4g-9sfh", limit=number_of_values)
+
+    # Create DataFrame from API results
+    df = pd.DataFrame.from_records(results)
+
     return df
+
+
+def fetch_data_from_csv(file_path="files/Meteorite_Landings.csv"):
+    """
+    Fetches data from a CSV file and performs some data transformations.
+
+    Parameters:
+    file_path (str): The path to the CSV file. Defaults to "files/Meteorite_Landings.csv".
+
+    Returns:
+    pandas.DataFrame: The DataFrame containing the fetched and transformed data.
+    """
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(file_path)
+
+    # Rename the 'GeoLocation' column to 'geolocation' and strip the quotes
+    df.rename(columns={"GeoLocation": "geolocation"}, inplace=True)
+    df["geolocation"] = df["geolocation"].str.strip('"')
+
+    # Rename the 'mass (g)' column to 'mass'
+    df.rename(columns={"mass (g)": "mass"}, inplace=True)
+
+    # Format the 'geolocation' column as dictionaries
+    df["geolocation"] = df.apply(
+        lambda row: {"latitude": str(row["reclat"]), "longitude": str(row["reclong"])},
+        axis=1,
+    )
+
+    return df
+
 
 def get_data():
     """
-    Fetches data from an API and sets it up in a dataframe.
+    Fetches data either from an API or from a CSV file and returns the resulting dataframe.
+    """
+    try:
+        df = fetch_data_from_api()
+    except:
+        df = fetch_data_from_csv()
+    return df
+
+
+def clear_df(df):
+    """
+    Clears the given DataFrame by dropping the last two columns, extracting the year from the timestamp,
+    converting the id to int, mass to float, year to numeric, reclat to numeric, and reclong to numeric.
+    It also drops rows where the year is greater than the current year.
+
+    Parameters:
+    - df (pandas.DataFrame): The DataFrame to be cleared.
 
     Returns:
-        pandas.DataFrame: The dataframe containing the fetched and setup data.
+    - pandas.DataFrame: The cleared DataFrame.
     """
-    df = fetch_data_from_api()
-    df = setup_df(df)
+    # Drop the last two columns
+    df = df.iloc[:, :-2]
+
+    # Extract the year from the timestamp
+    try:
+        df["year"] = df["year"].str.split("-").str[0]
+    except:
+        pass
+
+    # Convert the id to int
+    df["id"] = df["id"].astype(int)
+    # Convert the mass to float
+    df["mass"] = df["mass"].astype(float)
+    # Convert the year to numeric
+    df["year"] = df["year"].astype(float)
+    # Convert the reclat to numeric
+    df["reclat"] = df["reclat"].astype(float)
+    # Convert the reclong to numeric
+    df["reclong"] = df["reclong"].astype(float)
+
+    # Drop rows where the year is greater than the current year
+    df.loc[df["year"] > datetime.datetime.now().year, "year"] = pd.NA
+
     return df
+
+
+def get_df():
+    """
+    Get the dataframe by retrieving the data using the `get_data()` function.
+    Then clear the dataframe using the `clear_df()` function.
+
+    Returns:
+        DataFrame: The cleaned dataframe.
+    """
+    # Get the data
+    df = get_data()
+
+    # Clear the data
+    df = clear_df(df)
+
+    return df
+
+
+def get_geodf(df: pd.DataFrame):
+    """
+    Generate a GeoDataFrame from a DataFrame by dropping rows with missing geolocation and creating Points based on the longitude and latitude values.
+
+    Parameters:
+    - df (pd.DataFrame): The input DataFrame containing the geolocation information.
+
+    Returns:
+    - gdf (gpd.GeoDataFrame): The generated GeoDataFrame with the added geometry column.
+    """
+    # Drop rows with missing geolocation
+    df = df.dropna(subset=["geolocation"])
+
+    # Create Points
+    geometry = [
+        Point(float(point["longitude"]), float(point["latitude"]))
+        for point in df["geolocation"]
+    ]
+
+    # Create a GeoDataFrame
+    gdf = gpd.GeoDataFrame(df, geometry=geometry)
+    return gdf

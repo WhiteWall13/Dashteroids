@@ -4,7 +4,7 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import configparser
 
-from get_data import get_data
+from get_data import *
 from maps import *
 from charts import *
 
@@ -13,19 +13,16 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # Get DataFrame
-df = get_data()
-df = df.dropna(subset=["geolocation"])
+df = get_df()
+
+# Get GeoDataFrame
+gdf = get_geodf(df)
 
 # Create Dash App
 app = dash.Dash(__name__)
 
-# Get GeoDataFrame
-gdf = get_geodf(df)
-print(gdf)
-
 # Set MapBox Token
 px.set_mapbox_access_token(config['TOKEN']['mapbox_token'])
-px.set_mapbox_access_token("pk.eyJ1IjoibmhtdTEzIiwiYSI6ImNsbXVvMG5zdDBncG4ya3FqOHF5ZDFqMnYifQ.gj17oeNk6Bo60vj4pHkBXQ")
 
 # Draw Maps
 # Draw Scatter Mapbox

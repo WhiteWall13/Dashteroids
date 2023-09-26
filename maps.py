@@ -4,22 +4,6 @@ from shapely.geometry import Point
 import plotly.express as px
 
 
-
-def get_geodf(df: pd.DataFrame):
-    """
-    Generate a GeoDataFrame from a DataFrame.
-    
-    Parameters:
-        df (pd.DataFrame): The DataFrame containing the data.
-    
-    Returns:
-        gdf (gpd.GeoDataFrame): The generated GeoDataFrame.
-    """
-    geometry = [Point(float(point['longitude']), float(point['latitude'])) for point in df['geolocation']]
-    gdf = gpd.GeoDataFrame(df, geometry=geometry)
-    return gdf
-
-
 def clear_years(gdf: gpd.GeoDataFrame):
     """
     Clear years from a GeoDataFrame.

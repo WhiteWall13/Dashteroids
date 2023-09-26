@@ -14,6 +14,7 @@ def draw_sum_chart(df: pd.DataFrame):
     Returns:
     - sum_chart: The line chart showing the number of asteroids per year.
     """
+    # print(type(df['year'][0]))
     dfy = df.groupby('year').size().reset_index(name='value')
     # dfy = dfy[dfy["value"] > 1]
     sum_chart = px.line(dfy, x='year', y='value', title='Number of Asteroids by year')
