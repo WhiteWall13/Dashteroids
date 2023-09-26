@@ -91,11 +91,11 @@ def clear_df(df):
     df["id"] = df["id"].astype(int)
     # Convert the mass to float
     df["mass"] = df["mass"].astype(float)
-    # Convert the year to numeric
+    # Convert the year to float
     df["year"] = df["year"].astype(float)
-    # Convert the reclat to numeric
+    # Convert the reclat to float
     df["reclat"] = df["reclat"].astype(float)
-    # Convert the reclong to numeric
+    # Convert the reclong to float
     df["reclong"] = df["reclong"].astype(float)
 
     # Drop rows where the year is greater than the current year
