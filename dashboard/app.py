@@ -20,6 +20,8 @@ df = get_df()
 # Get GeoDataFrame
 gdf = get_geodf(df)
 
+# print(df)
+
 # Create Dash App
 app = dash.Dash(__name__)
 
@@ -37,6 +39,8 @@ density_mapbox = draw_density_mapbox(gdf)
 sum_chart = draw_sum_chart(df)
 # Draw CumSum Chart
 cumsum_chart = draw_cumsum_chart(df)
+# Draw Pie Chart and get number of classes
+class_pie_chart, number_of_classes = draw_pie_chart(df)
 
 # Set variables
 year_min = int(df["year"].min())
@@ -83,6 +87,15 @@ app.layout = html.Div(
             marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
             value=[fifty_min, fifty_max],
         ),
+        dcc.Graph(id="class_pie_chart", figure=class_pie_chart),
+        dcc.Slider(
+            id="class-slider",
+            min=1,
+            max=number_of_classes,
+            step=1,
+            marks={i: str(i) for i in range(1, number_of_classes + 1) if i % 20 == 0},
+            value=number_of_classes,
+        ),
     ]
 )
 
@@ -113,6 +126,12 @@ def update_sum(selected_sum_type, year_range):
         return draw_sum_chart(filtered_df)
     elif selected_sum_type == "cumsum":
         return draw_cumsum_chart(filtered_df)
+
+
+@app.callback(Output("class_pie_chart", "figure"), Input("class-slider", "value"))
+def update_pie_chart(selected_value):
+    updated_pie_chart = draw_pie_chart(df, number_of_values=selected_value)
+    return updated_pie_chart[0]
 
 
 def run_app(debug=False):

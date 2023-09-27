@@ -32,3 +32,18 @@ def draw_cumsum_chart(df: pd.DataFrame):
     """
     cumsum_chart = px.ecdf(df, x=["year"])
     return cumsum_chart
+
+
+def draw_pie_chart(df: pd.DataFrame, number_of_values=None):
+    if number_of_values is None:
+        recclass_counts = df["recclass"].value_counts()
+    else:
+        recclass_counts = df["recclass"].value_counts()[:number_of_values]
+    class_pie_chart = px.pie(
+        recclass_counts,
+        values=recclass_counts.values,
+        names=recclass_counts.index,
+        title="Class Distribution of Asteroids",
+    )
+    class_pie_chart.update_traces(textposition="inside", textinfo="percent+label")
+    return class_pie_chart, len(recclass_counts)

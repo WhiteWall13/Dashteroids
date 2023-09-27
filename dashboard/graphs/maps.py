@@ -23,7 +23,7 @@ def clear_years(gdf: gpd.GeoDataFrame):
 
 def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r", year_min=1500):
     gdf.loc[gdf["year"] < year_min, "year"] = pd.NA
-    # TODO: Change the scale
+    gdf = gdf.dropna(subset=["mass"])
     map = px.scatter_mapbox(
         gdf,
         lat=gdf.geometry.y,
@@ -32,6 +32,7 @@ def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r", year_min=1500):
         zoom=1,
         # TODO: Setup size
         # size="mass",
+        # size_min=5,
         # size_max=15,
         color="year",
         color_continuous_scale=color,

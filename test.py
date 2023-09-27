@@ -1,13 +1,18 @@
+import plotly.express as px
 from data.get_data import *
 
-df_api = fetch_data_from_api()
-df_csv = fetch_data_from_csv()
 
-print(clear_df(df_api))
-print(clear_df(df_csv))
+def draw_pie_chart(df: pd.DataFrame):
+    recclass_counts = df["recclass"].value_counts()
+    print(recclass_counts)
+    fig = px.pie(
+        recclass_counts,
+        values=recclass_counts.values,
+        names=recclass_counts.index,
+        title="Class Distribution of Asteroids",
+    )
+    return fig
 
-print(type(clear_df(df_api)["geolocation"][0]))
-print(type(clear_df(df_csv)["geolocation"][0]))
 
-
-print(clear_df(df_api) == clear_df(df_csv))
+df = get_df()
+draw_pie_chart(df).show()
