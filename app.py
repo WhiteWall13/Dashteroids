@@ -39,8 +39,8 @@ cumsum_chart = draw_cumsum_chart(df)
 # Set variables
 year_min = int(df["year"].min())
 year_max = int(df["year"].max())
-decade_min = (year_min // 10) * 10
-decade_max = ((year_max + 9) // 10) * 10
+fifty_min = (year_min // 50) * 50
+fifty_max = ((year_max + 49) // 50) * 50
 step = 50
 
 # Layout
@@ -56,14 +56,13 @@ app.layout = html.Div(
             value="scatter",
         ),
         dcc.Graph(id="map", style={"width": "100%", "height": "100%"}),
-        # TODO: Fix map slider
         dcc.RangeSlider(
-            id="year-slider",
+            id="year-slider-map",
             min=year_min,
             max=year_max,
             step=1,
-            marks={i: str(i) for i in range(decade_min, decade_max + 1, step)},
-            value=[year_min, year_max],
+            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
+            value=[fifty_min, fifty_max],
         ),
         dcc.Dropdown(
             id="chart-type",
@@ -74,21 +73,21 @@ app.layout = html.Div(
             value="sum",
         ),
         dcc.Graph(id="sum-chart-type", style={"width": "100%", "height": "100%"}),
-        # TODO: Fix slider end (2010 max year and should be 2020)
         dcc.RangeSlider(
-            id="year-slider",
+            id="year-slider-sum",
             min=year_min,
             max=year_max,
             step=1,
-            marks={i: str(i) for i in range(decade_min, decade_max + 1, step)},
-            value=[year_min, year_max],
+            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
+            value=[fifty_min, fifty_max],
         ),
     ]
 )
 
 
 @app.callback(
-    Output("map", "figure"), [Input("map-type", "value"), Input("year-slider", "value")]
+    Output("map", "figure"),
+    [Input("map-type", "value"), Input("year-slider-map", "value")],
 )
 def update_map(selected_map_type, year_range):
     year_min, year_max = year_range
@@ -102,7 +101,7 @@ def update_map(selected_map_type, year_range):
 
 @app.callback(
     Output("sum-chart-type", "figure"),
-    [Input("chart-type", "value"), Input("year-slider", "value")],
+    [Input("chart-type", "value"), Input("year-slider-sum", "value")],
 )
 def update_sum(selected_sum_type, year_range):
     year_min, year_max = year_range
