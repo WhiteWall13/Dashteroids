@@ -4,9 +4,11 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import configparser
 
-from get_data import *
-from maps import *
-from charts import *
+
+from data.get_data import *
+from dashboard.graphs.maps import *
+from dashboard.graphs.charts import *
+
 
 # Config parser
 config = configparser.ConfigParser()
@@ -113,6 +115,5 @@ def update_sum(selected_sum_type, year_range):
         return draw_cumsum_chart(filtered_df)
 
 
-# Execute App
-if __name__ == "__main__":
-    app.run_server(debug=True)
+def run_app(debug=False):
+    app.run_server(debug=debug)
