@@ -5,10 +5,10 @@ import plotly.express as px
 
 
 def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r"):
-    gdf = gdf.dropna(subset=["mass"])
+    # gdf = gdf.dropna(subset=["mass"])
     map = px.scatter_mapbox(
         gdf,
-        title="Scatter map of metorites",
+        title="Scatter map of meteorites landings",
         lat=gdf.geometry.y,
         lon=gdf.geometry.x,
         hover_name="name",
@@ -36,7 +36,7 @@ def draw_density_mapbox(gdf: gpd.GeoDataFrame):
     """
     map = px.density_mapbox(
         gdf,
-        title="Density map of metorites",
+        title="Density map of metorites landings",
         lat="reclat",
         lon="reclong",
         z="id",
