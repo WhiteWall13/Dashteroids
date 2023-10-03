@@ -4,28 +4,11 @@ from shapely.geometry import Point
 import plotly.express as px
 
 
-def clear_years(gdf: gpd.GeoDataFrame):
-    """
-    Clear years from a GeoDataFrame.
-
-    Parameters:
-        gdf (gpd.GeoDataFrame): The GeoDataFrame to clear the years from.
-
-    Returns:
-        gdf (gpd.GeoDataFrame): The GeoDataFrame with the years cleared.
-    """
-    gdf["year"] = gdf["year"].astype(float)
-    gdf.loc[gdf["year"] < 1500, "year"] = pd.NA
-    # TODO: Get current year instead of 2023
-    gdf.loc[gdf["year"] > 2023, "year"] = pd.NA
-    return gdf
-
-
-def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r", year_min=1500):
-    gdf.loc[gdf["year"] < year_min, "year"] = pd.NA
+def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r"):
     gdf = gdf.dropna(subset=["mass"])
     map = px.scatter_mapbox(
         gdf,
+        title="Scatter map of metorites",
         lat=gdf.geometry.y,
         lon=gdf.geometry.x,
         hover_name="name",
@@ -53,12 +36,13 @@ def draw_density_mapbox(gdf: gpd.GeoDataFrame):
     """
     map = px.density_mapbox(
         gdf,
+        title="Density map of metorites",
         lat="reclat",
         lon="reclong",
         z="id",
         radius=10,
         center=dict(lat=0, lon=180),
         zoom=1,
-        mapbox_style="stamen-terrain",
+        # mapbox_style="stamen-terrain",
     )
     return map

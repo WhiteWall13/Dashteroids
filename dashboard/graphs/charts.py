@@ -30,7 +30,9 @@ def draw_cumsum_chart(df: pd.DataFrame):
     Returns:
         cumsum_chart: The cumulative sum chart.
     """
-    cumsum_chart = px.ecdf(df, x=["year"])
+    cumsum_chart = px.ecdf(
+        df, x=["year"], title="Cumulative Number of Asteroids by year"
+    )
     return cumsum_chart
 
 

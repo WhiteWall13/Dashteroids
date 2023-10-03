@@ -1,5 +1,6 @@
 import dash
 from dash import dcc, html
+from dash import dash_table
 from dash.dependencies import Input, Output
 import plotly.express as px
 import configparser
@@ -19,6 +20,9 @@ df = get_df()
 
 # Get GeoDataFrame
 gdf = get_geodf(df)
+
+# Get DataFrame without Geolocation
+table_df = df.drop("geolocation", axis=1)
 
 # print(df)
 
@@ -53,40 +57,26 @@ step = 50
 app.layout = html.Div(
     [
         html.H1("Dashteroids"),
-        dcc.Dropdown(
-            id="map-type",
-            options=[
-                {"label": "Scatter", "value": "scatter"},
-                {"label": "Density", "value": "density"},
+        dash_table.DataTable(
+            # Table
+            id="datatable",
+            columns=[
+                {"name": "Name", "id": "name"},
+                {"name": "ID", "id": "id"},
+                {"name": "Name Type", "id": "nametype"},
+                {"name": "Rec Class", "id": "recclass"},
+                {"name": "Mass (g)", "id": "mass"},
+                {"name": "Fall", "id": "fall"},
+                {"name": "Year", "id": "year"},
+                {"name": "Latitude", "id": "reclat"},
+                {"name": "Longitude", "id": "reclong"},
             ],
-            value="scatter",
+            data=table_df.to_dict("records"),
+            sort_action="native",
+            page_size=10,
+            # style_table={"height": "400px", "overflowY": "auto"},
         ),
-        dcc.Graph(id="map", style={"width": "100%", "height": "100%"}),
-        dcc.RangeSlider(
-            id="year-slider-map",
-            min=year_min,
-            max=year_max,
-            step=1,
-            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
-            value=[fifty_min, fifty_max],
-        ),
-        dcc.Dropdown(
-            id="chart-type",
-            options=[
-                {"label": "Sum", "value": "sum"},
-                {"label": "CumSum", "value": "cumsum"},
-            ],
-            value="sum",
-        ),
-        dcc.Graph(id="sum-chart-type", style={"width": "100%", "height": "100%"}),
-        dcc.RangeSlider(
-            id="year-slider-sum",
-            min=year_min,
-            max=year_max,
-            step=1,
-            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
-            value=[fifty_min, fifty_max],
-        ),
+        # Pie chart
         dcc.Graph(id="class_pie_chart", figure=class_pie_chart),
         dcc.Slider(
             id="class-slider",
@@ -96,42 +86,100 @@ app.layout = html.Div(
             marks={i: str(i) for i in range(1, number_of_classes + 1) if i % 20 == 0},
             value=number_of_classes,
         ),
+        dcc.Markdown(id="pie_description", style={"margin-top": "20px"}),
+        # Sums charts
+        dcc.Dropdown(
+            id="sum-type",
+            options=[
+                {"label": "Sum", "value": "Sum"},
+                {"label": "CumSum", "value": "Cumsum"},
+            ],
+            value="Sum",
+        ),
+        dcc.Graph(id="sum", style={"width": "100%", "height": "100%"}),
+        dcc.RangeSlider(
+            id="year-slider-sum",
+            min=year_min,
+            max=year_max,
+            step=1,
+            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
+            value=[fifty_min, year_max],
+        ),
+        dcc.Markdown(id="sum-description", style={"margin-top": "20px"}),
+        # Maps
+        dcc.Dropdown(
+            id="map-type",
+            options=[
+                {"label": "Scatter", "value": "Scatter"},
+                {"label": "Density", "value": "Density"},
+            ],
+            value="Scatter",
+        ),
+        dcc.Graph(id="map", style={"width": "100%", "height": "100%"}),
+        dcc.RangeSlider(
+            id="year-slider-map",
+            min=year_min,
+            max=year_max,
+            step=1,
+            marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
+            value=[year_min, year_max],
+        ),
+        dcc.Markdown(id="map-description", style={"margin-top": "20px"}),
     ]
 )
 
 
 @app.callback(
-    Output("map", "figure"),
+    [Output("map-description", "children"), Output("map", "figure")],
     [Input("map-type", "value"), Input("year-slider-map", "value")],
 )
-def update_map(selected_map_type, year_range):
+def update_map_description_and_figure(map_type, year_range):
     year_min, year_max = year_range
     filtered_gdf = gdf[(gdf["year"] >= year_min) & (gdf["year"] <= year_max)]
 
-    if selected_map_type == "scatter":
-        return draw_scatter_mapbox(filtered_gdf)
-    elif selected_map_type == "density":
-        return draw_density_mapbox(filtered_gdf)
+    map_description = f"*{map_type} map of geolocation of asteroids between {year_min} and {year_max}.*"
+
+    if map_type == "Scatter":
+        map_figure = draw_scatter_mapbox(filtered_gdf)
+    elif map_type == "Density":
+        map_figure = draw_density_mapbox(filtered_gdf)
+    else:
+        map_figure = None
+
+    return map_description, map_figure
 
 
 @app.callback(
-    Output("sum-chart-type", "figure"),
-    [Input("chart-type", "value"), Input("year-slider-sum", "value")],
+    [Output("sum-description", "children"), Output("sum", "figure")],
+    [Input("sum-type", "value"), Input("year-slider-sum", "value")],
 )
-def update_sum(selected_sum_type, year_range):
+def update_sum_description_and_figure(sum_type, year_range):
     year_min, year_max = year_range
     filtered_df = df[(df["year"] >= year_min) & (df["year"] <= year_max)]
 
-    if selected_sum_type == "sum":
-        return draw_sum_chart(filtered_df)
-    elif selected_sum_type == "cumsum":
-        return draw_cumsum_chart(filtered_df)
+    sum_description = (
+        f"*{sum_type} of meteorite landing by year between {year_min} and {year_max}.*"
+    )
+
+    if sum_type == "Sum":
+        sum_figure = draw_sum_chart(filtered_df)
+    elif sum_type == "Cumsum":
+        sum_figure = draw_cumsum_chart(filtered_df)
+    else:
+        # Handle other sum types here if needed
+        sum_figure = None
+
+    return sum_description, sum_figure
 
 
-@app.callback(Output("class_pie_chart", "figure"), Input("class-slider", "value"))
-def update_pie_chart(selected_value):
+@app.callback(
+    [Output("class_pie_chart", "figure"), Output("pie_description", "children")],
+    [Input("class-slider", "value")],
+)
+def update_pie_chart_and_description(selected_value):
     updated_pie_chart = draw_pie_chart(df, number_of_values=selected_value)
-    return updated_pie_chart[0]
+    pie_description = f"*Pie chart showing {selected_value} most represented classes.*"
+    return updated_pie_chart[0], pie_description
 
 
 def run_app(debug=False):

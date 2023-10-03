@@ -26,7 +26,7 @@ def fetch_data_from_api(number_of_values=1000000):
     return df
 
 
-def fetch_data_from_csv(file_path="files/Meteorite_Landings.csv"):
+def fetch_data_from_csv(file_path="data/files/Meteorite_Landings.csv"):
     """
     Fetches data from a CSV file and performs some data transformations.
 
