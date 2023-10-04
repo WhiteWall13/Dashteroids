@@ -4,7 +4,7 @@ from shapely.geometry import Point
 import plotly.express as px
 
 
-def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r"):
+def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r", dark_mode=False):
     # gdf = gdf.dropna(subset=["mass"])
     map = px.scatter_mapbox(
         gdf,
@@ -20,7 +20,8 @@ def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r"):
         color="year",
         color_continuous_scale=color,
     )
-    # map.update_layout(mapbox_style="white-bg")
+    if dark_mode:
+        map.update_layout(mapbox_style="white-bg")
     return map
 
 

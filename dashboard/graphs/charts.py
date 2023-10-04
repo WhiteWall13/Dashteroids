@@ -2,9 +2,6 @@ import pandas as pd
 import plotly.express as px
 
 
-# TODO slider or year selecter to choose first and last year
-
-
 def draw_sum_chart(df: pd.DataFrame):
     """
     Generate a line chart of the number of asteroids per year based on the given DataFrame.
@@ -47,7 +44,7 @@ def draw_pie_chart(df: pd.DataFrame, number_of_values=None):
         recclass_counts,
         values=recclass_counts.values,
         names=recclass_counts.index,
-        title="Class Distribution of metorites",
+        title="Class Distribution of meteorites",
     )
     class_pie_chart.update_traces(textposition="inside", textinfo="percent+label")
     return class_pie_chart, len(recclass_counts)
