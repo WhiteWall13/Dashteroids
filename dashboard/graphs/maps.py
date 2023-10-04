@@ -20,6 +20,7 @@ def draw_scatter_mapbox(gdf: gpd.GeoDataFrame, color="ylorrd_r"):
         color="year",
         color_continuous_scale=color,
     )
+    # map.update_layout(mapbox_style="white-bg")
     return map
 
 
@@ -36,7 +37,7 @@ def draw_density_mapbox(gdf: gpd.GeoDataFrame):
     """
     map = px.density_mapbox(
         gdf,
-        title="Density map of metorites landings",
+        title="Density map of meteorites landingss",
         lat="reclat",
         lon="reclong",
         z="id",

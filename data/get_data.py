@@ -3,6 +3,7 @@ from sodapy import Socrata
 import geopandas as gpd
 from shapely.geometry import Point
 import datetime
+import requests
 
 
 def fetch_data_from_api(number_of_values=1000000):
@@ -143,3 +144,13 @@ def get_geodf(df: pd.DataFrame):
     # Create a GeoDataFrame
     gdf = gpd.GeoDataFrame(df, geometry=geometry)
     return gdf
+
+
+def test_connection(url="http://www.google.com"):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return True
+    except:
+        pass
+    return False

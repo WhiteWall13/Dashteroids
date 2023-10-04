@@ -16,7 +16,9 @@ def draw_sum_chart(df: pd.DataFrame):
     - sum_chart: The line chart showing the number of asteroids per year.
     """
     dfy = df.groupby("year").size().reset_index(name="value")
-    sum_chart = px.line(dfy, x="year", y="value", title="Number of Asteroids by year")
+    sum_chart = px.line(
+        dfy, x="year", y="value", title="Number of meteorites landings by year"
+    )
     return sum_chart
 
 
@@ -31,7 +33,7 @@ def draw_cumsum_chart(df: pd.DataFrame):
         cumsum_chart: The cumulative sum chart.
     """
     cumsum_chart = px.ecdf(
-        df, x=["year"], title="Cumulative Number of Asteroids by year"
+        df, x=["year"], title="Cumulative Number of meteorites landings by year"
     )
     return cumsum_chart
 
@@ -45,7 +47,7 @@ def draw_pie_chart(df: pd.DataFrame, number_of_values=None):
         recclass_counts,
         values=recclass_counts.values,
         names=recclass_counts.index,
-        title="Class Distribution of Asteroids",
+        title="Class Distribution of metorites",
     )
     class_pie_chart.update_traces(textposition="inside", textinfo="percent+label")
     return class_pie_chart, len(recclass_counts)

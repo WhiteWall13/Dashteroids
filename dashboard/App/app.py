@@ -58,10 +58,40 @@ colorscales = px.colors.named_colorscales() + [
     color + "_r" for color in px.colors.named_colorscales()
 ]
 
+connexion = test_connection()
+
+
 # Layout
 app.layout = html.Div(
     [
         html.H1("Dashteroids - Data Dashboard"),
+        # Button
+        html.Div(
+            [
+                html.A(
+                    "Dataset",
+                    href="https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh",
+                    target="_blank",
+                    style={
+                        "display": "block",
+                        "text-align": "center",
+                        "margin": "20px auto",
+                        "font-size": "18px",
+                        "text-decoration": "none",
+                        "color": "white",
+                        "background-color": "blue",
+                        "padding": "10px 20px",
+                        "border-radius": "5px",
+                        "width": "150px",
+                    },
+                ),
+            ],
+            style={
+                "text-align": "center",
+                "display": "none" if not connexion else "block",
+            },
+        ),
+        # DataTable
         html.Div(
             [
                 html.H2("Data Table"),
@@ -100,6 +130,7 @@ app.layout = html.Div(
                         if i % 20 == 0
                     },
                     value=number_of_classes,
+                    tooltip={"placement": "bottom", "always_visible": True},
                 ),
                 dcc.Markdown(id="pie_description", style={"margin-top": "20px"}),
             ]
@@ -124,6 +155,7 @@ app.layout = html.Div(
                     step=1,
                     marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
                     value=[fifty_min, year_max],
+                    tooltip={"placement": "bottom", "always_visible": True},
                 ),
                 dcc.Markdown(id="sum-description", style={"margin-top": "20px"}),
             ]
@@ -155,15 +187,28 @@ app.layout = html.Div(
                     step=1,
                     marks={i: str(i) for i in range(fifty_min, fifty_max + 1, step)},
                     value=[year_min, year_max],
+                    tooltip={"placement": "bottom", "always_visible": True},
                 ),
                 dcc.Markdown(id="map-description", style={"margin-top": "20px"}),
-            ]
+            ],
+            style={"display": "none" if not connexion else "block"},
+        ),
+        # Conditionnal mesage
+        html.Div(
+            "You are currently running this Dashboard with no connection. All features can't be displayed.",
+            id="connection-message",
+            style={
+                "text-align": "center",
+                "font-size": "18px",
+                "color": "red",
+                "margin-top": "20px",
+                "display": "none" if connexion else "block",
+            },
         ),
     ]
 )
 
 
-# Callbacks
 # Callbacks
 @app.callback(
     [
@@ -186,7 +231,7 @@ def update_map_description_and_figure(map_type, year_range, color):
 
     if map_type == "Scatter":
         map_figure = draw_scatter_mapbox(filtered_gdf, color=color)
-        color_dropdown_style = {}  # Affiche le dropdown des couleurs pour Scatter
+        color_dropdown_style = {}
     elif map_type == "Density":
         map_figure = draw_density_mapbox(filtered_gdf)
     else:
@@ -212,7 +257,6 @@ def update_sum_description_and_figure(sum_type, year_range):
     elif sum_type == "Cumsum":
         sum_figure = draw_cumsum_chart(filtered_df)
     else:
-        # Handle other sum types here if needed
         sum_figure = None
 
     return sum_description, sum_figure

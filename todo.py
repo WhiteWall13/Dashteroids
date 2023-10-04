@@ -3,12 +3,10 @@
 # TODO : patch size of scatter map
 # TODO : path of file like app.main()
 # TODO : reorganise dashboard/app.py and main.py
-# TODO : Add titles
 # TODO : Test other map templates
 # TODO : Use other params of doc scatter_mapbox
 
 # Features
-# TODO : Change color scale (https://plotly.com/python/builtin-colorscales/)
 # TODO : Change map layer
 # TODO : Add map cluster (https://plotly.com/python/scattermapbox/)
 
