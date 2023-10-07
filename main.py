@@ -1,4 +1,9 @@
-from dashboard.App.app import *
+from data.get_data import get_df
+from dashboard.app.app import run_app
+
+# Get DataFrame
+df = get_df()
 
 if __name__ == "__main__":
-    run_app(debug=True)
+    # Run App
+    run_app(df, debug=True)

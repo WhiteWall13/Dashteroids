@@ -58,7 +58,10 @@ def fetch_data_from_csv(file_path="data/files/Meteorite_Landings.csv"):
 
 def get_data():
     """
-    Fetches data either from an API or from a CSV file and returns the resulting dataframe.
+    Get data from either an API or a CSV file.
+
+    Returns:
+    - df (pandas.DataFrame): The data fetched from the API or CSV file.
     """
     try:
         df = fetch_data_from_api()
@@ -146,7 +149,16 @@ def get_geodf(df: pd.DataFrame):
     return gdf
 
 
-def test_connection(url="http://www.google.com"):
+def test_connection(url: str = "http://www.google.com") -> bool:
+    """
+    Check if a connection can be established to the given URL.
+
+    Args:
+        url: The URL to test the connection to. Defaults to "http://www.google.com".
+
+    Returns:
+        True if a connection can be established, False otherwise.
+    """
     try:
         response = requests.get(url)
         if response.status_code == 200:
