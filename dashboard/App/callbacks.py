@@ -1,9 +1,9 @@
+from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
+from dashboard.graphs.charts import draw_sum_chart, draw_cumsum_chart, draw_pie_chart
+
 from dash.dependencies import Input, Output
 import pandas as pd
 import geopandas as gpd
-
-from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
-from dashboard.graphs.charts import draw_sum_chart, draw_cumsum_chart, draw_pie_chart
 
 
 def get_callbacks(app, df: pd.DataFrame, gdf: gpd.GeoDataFrame):
@@ -23,14 +23,16 @@ def get_callbacks(app, df: pd.DataFrame, gdf: gpd.GeoDataFrame):
             Output("map-description", "children"),
             Output("map", "figure"),
             Output("color_dd", "style"),
+            Output("color-label", "style"),
         ],
         [
             Input("map-type", "value"),
             Input("year-slider-map", "value"),
             Input("color_dd", "value"),
+            Input("layer_dd", "value"),
         ],
     )
-    def update_map_description_and_figure(map_type, year_range, color):
+    def update_map_description_and_figure(map_type, year_range, color, layer):
         """
         Updates the map description and figure based on the selected map type, year range, and color.
 
@@ -49,16 +51,17 @@ def get_callbacks(app, df: pd.DataFrame, gdf: gpd.GeoDataFrame):
 
         map_description = f"*{map_type} map of geolocation of meteorites landing between {year_min} and {year_max}.*"
         color_dropdown_style = {"display": "none"}
+        # color_label
 
         if map_type == "Scatter":
-            map_figure = draw_scatter_mapbox(filtered_gdf, color=color)
+            map_figure = draw_scatter_mapbox(filtered_gdf, color=color, layer=layer)
             color_dropdown_style = {}
         elif map_type == "Density":
-            map_figure = draw_density_mapbox(filtered_gdf)
+            map_figure = draw_density_mapbox(filtered_gdf, layer=layer)
         else:
             map_figure = None
 
-        return map_description, map_figure, color_dropdown_style
+        return map_description, map_figure, color_dropdown_style, color_dropdown_style
 
     # Sum charts Callback
     @app.callback(

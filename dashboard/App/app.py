@@ -37,7 +37,3 @@ def run_app(df: pd.DataFrame, debug: bool = False) -> None:
 
     # Run App
     app.run_server(debug=debug)
-    app.layout = app_layout(df, gdf)
-
-    # Run App
-    app.run_server(debug=debug)

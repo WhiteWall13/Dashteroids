@@ -1,0 +1,9 @@
+dash==2.13.0
+dash_core_components==2.0.0
+dash_html_components==2.0.0
+geopandas==0.13.2
+pandas==1.5.3
+plotly==5.16.1
+Requests==2.31.0
+Shapely==2.0.1
+sodapy==2.2.0
