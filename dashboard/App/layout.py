@@ -1,5 +1,10 @@
 from data.get_data import test_connection
-from dashboard.graphs.charts import draw_sum_chart, draw_cumsum_chart, draw_pie_chart
+from dashboard.graphs.charts import (
+    draw_sum_chart,
+    draw_cumsum_chart,
+    draw_pie_chart,
+    draw_hist_country_continent,
+)
 from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
 
 import pandas as pd
@@ -49,6 +54,8 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
     cumsum_chart = draw_cumsum_chart(df)
     # Draw Pie Chart and get number of classes
     class_pie_chart, number_of_classes = draw_pie_chart(df)
+    # Draw Histogram charts
+    hist_country_continent = draw_hist_country_continent(df)
 
     # Set variables
     year_min = int(df["year"].min())
@@ -83,7 +90,7 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
     return html.Div(
         [
             # Title
-            html.H1("Dashteroids - Data Dashboard"),
+            html.H1("Dashteroids - Data Dashboard", style={"text-align": "center"}),
             # Button
             html.Div(
                 [
@@ -181,6 +188,13 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                     dcc.Markdown(id="sum-description", style={"margin-top": "20px"}),
                 ]
             ),
+            # Histogram
+            html.Div(
+                [
+                    html.H2("Histogram"),
+                    dcc.Graph(id="hist_country", figure=hist_country_continent),
+                ]
+            ),
             # Maps
             html.Div(
                 [
@@ -196,13 +210,11 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                     html.P(
                         "Select your layer :",
                         id="color-layer",
-                        # style={"display": "none"},
                     ),
                     dcc.Dropdown(
                         id="layer_dd",
                         options=layers,
                         value="basic",
-                        # style={"display": "none"},
                     ),
                     html.P(
                         "Select your color :",

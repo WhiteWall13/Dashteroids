@@ -29,6 +29,9 @@ def run_app(df: pd.DataFrame, debug: bool = False) -> None:
     # Create Dash App
     app = dash.Dash(__name__)
 
+    # Set title
+    app.title = "Dashteroids"
+
     # Get Layout
     app.layout = app_layout(df, gdf)
 
