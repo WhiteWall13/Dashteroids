@@ -1,13 +1,11 @@
-certifi==2023.7.22
 dash==2.13.0
 dash_core_components==2.0.0
 dash_html_components==2.0.0
 geopandas==0.13.2
-geopy==2.4.0
 pandas==1.5.3
 plotly==5.16.1
 pycountry_convert==0.7.2
 Requests==2.31.0
-reverse_geocoder==1.5.1
-Shapely==2.0.1
+reverse_geocode==1.4.1
+Shapely==2.0.2
 sodapy==2.2.0

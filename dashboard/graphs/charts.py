@@ -4,6 +4,7 @@ import reverse_geocode
 import pycountry_convert as pc
 
 
+
 def draw_sum_chart(df: pd.DataFrame):
     """
     Generate a line chart of the number of asteroids per year based on the given DataFrame.
