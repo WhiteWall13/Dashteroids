@@ -14,6 +14,13 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash import dash_table
 
+intro_text = "This dataset presents a comprehensive collection of meteorite landings, meticulously compiled by The Meteoritical Society. It encapsulates the details of each meteorite landing, each entry enriched with information about the location, type, mass, and discovery details of the meteorites. The data, originally curated by Javier de la Torre, is a testament to the extensive history of meteoritic events that our planet has witnessed. The fields within this dataset range from geographical coordinates to mass in grams, and from the year of landing to the classification of meteorites. Notably, the dataset distinguishes between 'valid' meteorites—those that have been confirmed and cataloged—and 'relict' meteorites, which have undergone significant alteration due to Earth's weathering processes. The year 1969 marks a pivotal moment in history with the first human landing on the Moon, igniting the conquest of space. This event sparked a heightened interest in space and, consequently, meteorites began to be recorded with greater scrutiny. As a result, the default value for the year in our visualizations is set to 1969, reflecting the era when humanity turned its gaze starward, leading to an increased documentation of meteoritic discoveries. You can click on the button below to see the dataset."
+datatable_text = "The data table provides a detailed and sortable view of the meteorite landings. It serves as a foundational tool for researchers and enthusiasts alike, offering a granular look at each individual event. This table is the gateway to deeper insights and is the basis for all subsequent visual analyses."
+piechart_text = "The pie chart of meteorite classes reveals the distribution of various types of meteorites. The prominence of certain classes over others can be attributed to a combination of factors, including the frequency of these types in space, their survival rate through Earth's atmosphere, and the ease with which they can be found and identified on Earth's surface."
+linechart_text = "This line chart illustrates the sum and cumulative sum of meteorite landings over time. The sparse occurrences in earlier years may be due to a combination of less systematic record-keeping, fewer active searches, and the natural erosion and disappearance of older meteorites, making them harder to identify as time progresses."
+histogram_text = "The histogram displaying the number of meteorites found per continent highlights intriguing geographical patterns. The high numbers in Antarctica and Africa could be influenced by the visibility and preservation conditions in desert and ice environments, which are conducive to meteorite recovery. The size of the continent, human population density, and the extent of scientific exploration also play significant roles in these figures."
+map_text = "The scatter map and density visualization provide a spatial perspective of meteorite landings. The absence of meteorites in aquatic regions is not indicative of their actual fall patterns but rather reflects the difficulty in locating and retrieving meteorites from these environments."
+
 
 def get_colorscales():
     """
@@ -91,6 +98,10 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
         [
             # Title
             html.H1("Dashteroids - Data Dashboard", style={"text-align": "center"}),
+            dcc.Markdown(
+                intro_text,
+                style={"margin-top": "20px"},
+            ),
             # Button
             html.Div(
                 [
@@ -140,6 +151,10 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                     ),
                 ]
             ),
+            dcc.Markdown(
+                datatable_text,
+                style={"margin-top": "20px"},
+            ),
             # Pie chart
             html.Div(
                 [
@@ -155,11 +170,15 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                             for i in range(1, number_of_classes + 1)
                             if i % 20 == 0
                         },
-                        value=number_of_classes,
+                        value=10,
                         tooltip={"placement": "bottom", "always_visible": True},
                     ),
                     dcc.Markdown(id="pie_description", style={"margin-top": "20px"}),
                 ]
+            ),
+            dcc.Markdown(
+                piechart_text,
+                style={"margin-top": "20px"},
             ),
             # Sum chart
             html.Div(
@@ -182,11 +201,15 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                         marks={
                             i: str(i) for i in range(fifty_min, fifty_max + 1, step)
                         },
-                        value=[fifty_min, year_max],
+                        value=[1969, year_max],
                         tooltip={"placement": "bottom", "always_visible": True},
                     ),
                     dcc.Markdown(id="sum-description", style={"margin-top": "20px"}),
                 ]
+            ),
+            dcc.Markdown(
+                linechart_text,
+                style={"margin-top": "20px"},
             ),
             # Histogram
             html.Div(
@@ -194,6 +217,10 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                     html.H2("Histogram"),
                     dcc.Graph(id="hist_country", figure=hist_country_continent),
                 ]
+            ),
+            dcc.Markdown(
+                histogram_text,
+                style={"margin-top": "20px"},
             ),
             # Maps
             html.Div(
@@ -227,7 +254,7 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                         value="ylorrd_r",
                         style={"display": "none"},
                     ),
-                    dcc.Graph(id="map", style={"width": "100%", "height": "800px"}),
+                    dcc.Graph(id="map", style={"width": "100%", "height": "600px"}),
                     dcc.RangeSlider(
                         id="year-slider-map",
                         min=year_min,
@@ -236,12 +263,16 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                         marks={
                             i: str(i) for i in range(fifty_min, fifty_max + 1, step)
                         },
-                        value=[year_min, year_max],
+                        value=[1969, year_max],
                         tooltip={"placement": "bottom", "always_visible": True},
                     ),
                     dcc.Markdown(id="map-description", style={"margin-top": "20px"}),
                 ],
                 style={"display": "none" if not connection else "block"},
+            ),
+            dcc.Markdown(
+                map_text,
+                style={"margin-top": "20px"},
             ),
             # Conditionnal mesage
             html.Div(
@@ -255,5 +286,11 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                     "display": "none" if connection else "block",
                 },
             ),
-        ]
+        ],
+        style={
+            "max-width": "1200px",
+            "margin": "0 auto",
+            "padding": "0 20px",
+            "text-align": "justify",
+        },
     )
