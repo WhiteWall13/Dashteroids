@@ -9,3 +9,4 @@ Requests==2.31.0
 reverse_geocode==1.4.1
 Shapely==2.0.2
 sodapy==2.2.0
+GDAL==3.4.0

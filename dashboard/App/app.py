@@ -8,7 +8,9 @@ from dashboard.app.layout import app_layout
 from dashboard.app.callbacks import get_callbacks
 
 
-def run_app(df: pd.DataFrame, debug: bool = False) -> None:
+def run_app(
+    df: pd.DataFrame, host: str = "127.0.0.1", port: int = 8050, debug: bool = False
+) -> None:
     """
     Run the Dash app.
 
@@ -39,4 +41,4 @@ def run_app(df: pd.DataFrame, debug: bool = False) -> None:
     get_callbacks(app, df, gdf)
 
     # Run App
-    app.run_server(debug=debug)
+    app.run_server(host=host, port=port, debug=debug)

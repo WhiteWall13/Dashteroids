@@ -6,4 +6,4 @@ df = get_df()
 
 if __name__ == "__main__":
     # Run App
-    run_app(df, debug=True)
+    run_app(df)
