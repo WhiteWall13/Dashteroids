@@ -1,5 +1,10 @@
 from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
-from dashboard.graphs.charts import draw_sum_chart, draw_cumsum_chart, draw_pie_chart
+from dashboard.graphs.charts import (
+    draw_sum_chart,
+    draw_cumsum_chart,
+    draw_pie_chart,
+    draw_hist_distrib,
+)
 
 from dash.dependencies import Input, Output
 import pandas as pd
@@ -86,7 +91,9 @@ def get_callbacks(app, df: pd.DataFrame, gdf: gpd.GeoDataFrame):
 
         sum_description = f"*{sum_type} of meteorites landing by year between {year_min} and {year_max}.*"
 
-        if sum_type == "Sum":
+        if sum_type == "Histogram":
+            sum_figure = draw_hist_distrib(filtered_df)
+        elif sum_type == "Sum":
             sum_figure = draw_sum_chart(filtered_df)
         elif sum_type == "Cumsum":
             sum_figure = draw_cumsum_chart(filtered_df)

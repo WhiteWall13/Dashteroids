@@ -3,7 +3,8 @@ from dashboard.graphs.charts import (
     draw_sum_chart,
     draw_cumsum_chart,
     draw_pie_chart,
-    draw_hist_country_continent,
+    draw_bar_country_continent,
+    draw_hist_distrib,
 )
 from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
 
@@ -17,8 +18,8 @@ from dash import dash_table
 intro_text = "This dataset presents a comprehensive collection of meteorite landings, meticulously compiled by The Meteoritical Society. It encapsulates the details of each meteorite landing, each entry enriched with information about the location, type, mass, and discovery details of the meteorites. The data, originally curated by Javier de la Torre, is a testament to the extensive history of meteoritic events that our planet has witnessed. The fields within this dataset range from geographical coordinates to mass in grams, and from the year of landing to the classification of meteorites. Notably, the dataset distinguishes between 'valid' meteorites—those that have been confirmed and cataloged—and 'relict' meteorites, which have undergone significant alteration due to Earth's weathering processes. The year 1969 marks a pivotal moment in history with the first human landing on the Moon, igniting the conquest of space. This event sparked a heightened interest in space and, consequently, meteorites began to be recorded with greater scrutiny. As a result, the default value for the year in our visualizations is set to 1969, reflecting the era when humanity turned its gaze starward, leading to an increased documentation of meteoritic discoveries. You can click on the button below to see the dataset."
 datatable_text = "The data table provides a detailed and sortable view of the meteorite landings. It serves as a foundational tool for researchers and enthusiasts alike, offering a granular look at each individual event. This table is the gateway to deeper insights and is the basis for all subsequent visual analyses."
 piechart_text = "The pie chart of meteorite classes reveals the distribution of various types of meteorites. The prominence of certain classes over others can be attributed to a combination of factors, including the frequency of these types in space, their survival rate through Earth's atmosphere, and the ease with which they can be found and identified on Earth's surface."
-linechart_text = "This line chart illustrates the sum and cumulative sum of meteorite landings over time. The sparse occurrences in earlier years may be due to a combination of less systematic record-keeping, fewer active searches, and the natural erosion and disappearance of older meteorites, making them harder to identify as time progresses."
-histogram_text = "The histogram displaying the number of meteorites found per continent highlights intriguing geographical patterns. The high numbers in Antarctica and Africa could be influenced by the visibility and preservation conditions in desert and ice environments, which are conducive to meteorite recovery. The size of the continent, human population density, and the extent of scientific exploration also play significant roles in these figures."
+linechart_text = "Those histogram, line chart and cumulative sum charts depict the distribution of meteorite landings over the years, showing both the total count and the cumulative count. The scarcity of data in earlier years can be attributed to factors such as less systematic data recording, reduced efforts in meteorite searches, and the natural erosion and gradual disappearance of older meteorites, making their identification increasingly challenging as time passes."
+bar_text = "The bar chart displaying the number of meteorites found per continent highlights intriguing geographical patterns. The high numbers in Antarctica and Africa could be influenced by the visibility and preservation conditions in desert and ice environments, which are conducive to meteorite recovery. The size of the continent, human population density, and the extent of scientific exploration also play significant roles in these figures."
 map_text = "The scatter map and density visualization provide a spatial perspective of meteorite landings. The absence of meteorites in aquatic regions is not indicative of their actual fall patterns but rather reflects the difficulty in locating and retrieving meteorites from these environments."
 
 
@@ -61,8 +62,10 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
     cumsum_chart = draw_cumsum_chart(df)
     # Draw Pie Chart and get number of classes
     class_pie_chart, number_of_classes = draw_pie_chart(df)
-    # Draw Histogram charts
-    hist_country_continent = draw_hist_country_continent(df)
+    # Draw bar chart
+    bar_country_continent = draw_bar_country_continent(df)
+    # Draw histogram
+    histogram_distrib = draw_hist_distrib(df)
 
     # Set variables
     year_min = int(df["year"].min())
@@ -80,8 +83,6 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
         "open-street-map",
         "carto-positron",
         "carto-darkmatter",
-        "stamen-terrain",
-        "stamen-toner",
         "basic",
         "streets",
         "outdoors",
@@ -158,7 +159,7 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
             # Pie chart
             html.Div(
                 [
-                    html.H2("Class distribution"),
+                    html.H2("Pie Chart"),
                     dcc.Graph(id="class_pie_chart", figure=class_pie_chart),
                     dcc.Slider(
                         id="class-slider",
@@ -183,14 +184,15 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
             # Sum chart
             html.Div(
                 [
-                    html.H2("Sum charts"),
+                    html.H2("Histogram and Line Charts"),
                     dcc.Dropdown(
                         id="sum-type",
                         options=[
+                            {"label": "Histogram", "value": "Histogram"},
                             {"label": "Sum", "value": "Sum"},
                             {"label": "Cumulative Sum", "value": "Cumsum"},
                         ],
-                        value="Sum",
+                        value="Histogram",
                     ),
                     dcc.Graph(id="sum", style={"width": "100%", "height": "100%"}),
                     dcc.RangeSlider(
@@ -211,15 +213,15 @@ def app_layout(df: pd.DataFrame, gdf: gpd.GeoDataFrame):
                 linechart_text,
                 style={"margin-top": "20px"},
             ),
-            # Histogram
+            # Bar chart
             html.Div(
                 [
-                    html.H2("Histogram"),
-                    dcc.Graph(id="hist_country", figure=hist_country_continent),
+                    html.H2("Bar chart"),
+                    dcc.Graph(id="bar_country", figure=bar_country_continent),
                 ]
             ),
             dcc.Markdown(
-                histogram_text,
+                bar_text,
                 style={"margin-top": "20px"},
             ),
             # Maps
