@@ -9,7 +9,7 @@ from dashboard.app.callbacks import get_callbacks
 
 
 def run_app(
-    df: pd.DataFrame, host: str = "127.0.0.1", port: int = 8050, debug: bool = False
+    df: pd.DataFrame, host: str = "0.0.0.0", port: int = 8050, debug: bool = False
 ) -> None:
     """
     Run the Dash app.
