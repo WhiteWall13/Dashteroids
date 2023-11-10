@@ -1,23 +1,25 @@
-# Utiliser une image Python de base
+# Use a base Python image
 FROM python:3.10
-# Définir les variables d'environnement pour GDAL
+
+# Set environment variables for GDAL
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
-# Installer les dépendances système nécessaires pour GDAL
+# Install system dependencies required for GDAL
 RUN apt-get update && apt-get install -y libgdal-dev
 
-# Installer les dépendances Python
-RUN pip install -r requirements.txt
-
-# Définir le répertoire de travail
+# Set the working directory to /app
 WORKDIR /app
 
-# Copier les fichiers source dans le conteneur
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install -r /app/requirements.txt
+
+# Copy the source files into the container
 COPY . /app
 
-# Exposer le port sur lequel l'application Dash écoute
+# Expose the port on which the Dash application is listening
 EXPOSE 8050
 
-# Commande pour exécuter l'application Dash
+# Command to run the Dash application
 CMD ["python", "main.py"]
