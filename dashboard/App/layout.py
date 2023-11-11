@@ -11,8 +11,8 @@ from dashboard.graphs.maps import draw_scatter_mapbox, draw_density_mapbox
 import pandas as pd
 import geopandas as gpd
 import plotly.express as px
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 from dash import dash_table
 
 intro_text = "This dataset presents a comprehensive collection of meteorite landings, meticulously compiled by The Meteoritical Society. It encapsulates the details of each meteorite landing, each entry enriched with information about the location, type, mass, and discovery details of the meteorites. The data, originally curated by Javier de la Torre, is a testament to the extensive history of meteoritic events that our planet has witnessed. The fields within this dataset range from geographical coordinates to mass in grams, and from the year of landing to the classification of meteorites. Notably, the dataset distinguishes between 'valid' meteorites—those that have been confirmed and cataloged—and 'relict' meteorites, which have undergone significant alteration due to Earth's weathering processes. The year 1969 marks a pivotal moment in history with the first human landing on the Moon, igniting the conquest of space. This event sparked a heightened interest in space and, consequently, meteorites began to be recorded with greater scrutiny. As a result, the default value for the year in our visualizations is set to 1969, reflecting the era when humanity turned its gaze starward, leading to an increased documentation of meteoritic discoveries. You can click on the button below to see the dataset."

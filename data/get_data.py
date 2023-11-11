@@ -82,6 +82,8 @@ def clear_df(df):
     Returns:
     - pandas.DataFrame: The cleared DataFrame.
     """
+    df = df.copy()
+
     # Drop the last two columns
     df = df.iloc[:, :-2]
 

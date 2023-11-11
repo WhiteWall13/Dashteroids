@@ -2,10 +2,11 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 ![Plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
-Welcome to Dashteroids, your comprehensive dashboard for visualizing and analyzing meteorite landing data. This tool is designed to provide insightful analytics through interactive charts and maps. It can be used with our without internet connection.
+Welcome to Dashteroids, your comprehensive dashboard for visualizing and analyzing meteorite landing data. This tool is designed to provide insightful analytics through interactive charts and maps. **It can be used with our without internet connection**.
 
-## User Guide 📖
+## User Guide :book:
 ### Prerequisites
 
 Before you begin, make sure you have the following prerequisites installed:
@@ -57,7 +58,7 @@ docker run -p 8050:8050 dashteroids
 ```
 3. **View the Dashboard**: Just like with the Python option, open your browser and go to `http://localhost:8050`.
 
-## Data Analyze 📊
+## Data Analyze :bar_chart:
 This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh), curated by Javier de la Torre and The Meteoritical Society, offers a detailed record of meteorite landings, capturing each meteorite's location, type, mass, and discovery. Spanning diverse fields from geographical coordinates to meteorite classifications, it provides both a chronological and categorical view of these celestial events. The [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) distinguishes between 'valid' and 'relict' meteorites, highlighting the interaction between these space objects and Earth's environment. Significantly, post-1969, the year of the first Moon landing, marks an era of increased meteorite documentation, reflecting a surge in space exploration interest. This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) not only traces the scientific journey of meteorite discovery but also reflects humanity's evolving curiosity in space.
 
 ### Exploration of the Meteorite Landings Dataset: A Datatable
@@ -128,7 +129,7 @@ The asteroid discovery points and density map provide a compelling visualization
 ### Synthesis of Meteorite Landings Data Analysis 
 The Meteorite Landings [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) offers a unique window into the history of celestial encounters with Earth, enriched by diverse data ranging from geographical locations to meteorite classifications. Key insights include the predominance of certain meteorite classes, reflecting both natural abundance and scientific collection biases. The temporal distribution of meteorite landings, particularly the surge post-1969, highlights the impact of technological advancements and growing scientific interest. Geographical trends in discoveries underscore the interplay of environmental conditions, human factors and technological factors, with notable concentrations in regions like Antarctica and Africa. This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) not only charts the physical journey of these space travelers but also encapsulates humanity's evolving curiosity and engagement with the cosmos.
 
-## Developper guide 🧑‍💻
+## Developper guide :technologist:
 
 After successfully launching the Dashteroids dashboard, you may be curious about the underlying code and architecture. This section provides a detailed walkthrough of the codebase, making it easier for developers to navigate and understand the project.
 
