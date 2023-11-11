@@ -1,4 +1,8 @@
 # Dashteroids ☄️
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white)
+
 Welcome to Dashteroids, your comprehensive dashboard for visualizing and analyzing meteorite landing data. This tool is designed to provide insightful analytics through interactive charts and maps. It can be used with our without internet connection.
 
 ## User Guide 📖
@@ -54,23 +58,16 @@ docker run -p 8050:8050 dashteroids
 3. **View the Dashboard**: Just like with the Python option, open your browser and go to `http://localhost:8050`.
 
 ## Data Analyze 📊
-This dataset presents a comprehensive collection of meteorite landings, meticulously compiled by The Meteoritical Society. It encapsulates the intricate details of each meteorite landing, with each entry enriched by information about the location, type, mass, and discovery details of the meteorites. Originally curated by Javier de la Torre, this dataset stands as a testament to the extensive history of meteoritic events that our planet has witnessed, tracing back the cosmic journey of these celestial visitors.
-
-The fields within this [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) are diverse, ranging from geographical coordinates, which map the global footprint of these landings, to the mass in grams, offering insights into the physical characteristics of the meteorites. Additionally, the dataset includes the year of landing and the classification of meteorites, providing a chronological and categorical perspective of these events. Notably, the dataset distinguishes between 'valid' meteorites—those that have been confirmed and cataloged—and 'relict' meteorites, which have undergone significant alteration due to Earth's weathering processes, thus offering a unique glimpse into the interplay between these extraterrestrial objects and our planet's environment.
-
-The year 1969 marks a pivotal moment in history with the first human landing on the Moon, a milestone that ignited the conquest of space and sparked a global fascination with the cosmos. This event coincided with a heightened interest in space and meteoritics, leading to meteorites being recorded with greater scrutiny and detail. As a result, the default value for the year in our visualizations is set to 1969, reflecting the era when humanity turned its gaze starward with renewed vigor, leading to an increased documentation of meteoritic discoveries. This dataset not only chronicles the scientific journey of meteorite discovery but also mirrors humanity's growing interest and advancement in space exploration.
-
-By delving into this dataset, we embark on a journey that transcends time and space, offering a unique opportunity to explore the intersection of astronomy, geology, and human curiosity. You can click on the button below to see the dataset and join us in uncovering the stories hidden within these celestial fragments.
-        
+This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh), curated by Javier de la Torre and The Meteoritical Society, offers a detailed record of meteorite landings, capturing each meteorite's location, type, mass, and discovery. Spanning diverse fields from geographical coordinates to meteorite classifications, it provides both a chronological and categorical view of these celestial events. The [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) distinguishes between 'valid' and 'relict' meteorites, highlighting the interaction between these space objects and Earth's environment. Significantly, post-1969, the year of the first Moon landing, marks an era of increased meteorite documentation, reflecting a surge in space exploration interest. This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) not only traces the scientific journey of meteorite discovery but also reflects humanity's evolving curiosity in space.
 
 ### Exploration of the Meteorite Landings Dataset: A Datatable
-Our first visualization offers an interactive datatable, providing a direct and detailed view of the meteorite landings data. This table is designed to facilitate an initial, in-depth exploration of the dataset, showcasing the raw data in its most granular form (I just transformed the year data from a timestamp format to an integer format. This modification enhances the readability and usability of the data). This datatable is an excellent starting point for anyone interested in delving into the world of meteorite landings.
+Our first visualization offers an interactive datatable, providing a direct and detailed view of the meteorite landings data. This table is designed to facilitate an initial, in-depth exploration of the [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh), showcasing the raw data in its most granular form (I just transformed the year data from a timestamp format to an integer format. This modification enhances the readability and usability of the data). This datatable is an excellent starting point for anyone interested in delving into the world of meteorite landings.
 
 ### Analysis of Predominant Meteorite Classes in the Dataset : A pie chart
-The dataset reveals a significant distribution of meteorite classes, predominantly featuring various types of chondrites and their subcategories. Here's an analysis of why these particular groups are more commonly found:
+The [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) reveals a significant distribution of meteorite classes, predominantly featuring various types of chondrites and their subcategories. Here's an analysis of why these particular groups are more commonly found:
 
 #### Chondrites (L and H Classes)
-L (Low iron) and H (High iron) Chondrites: These are among the most common types of meteorites. L chondrites have low iron/nickel metal content, while H chondrites have a higher metal content. Their abundance in the dataset reflects their frequent occurrence in meteorite falls on Earth.
+L (Low iron) and H (High iron) Chondrites: These are among the most common types of meteorites. L chondrites have low iron/nickel metal content, while H chondrites have a higher metal content. Their abundance in the [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) reflects their frequent occurrence in meteorite falls on Earth.
 LL (Low metal, Low iron) Chondrites: This subgroup of chondrites has even lower metal content. They are less common than L and H types but still significant in number.
 #### Petrologic Types (Numbered Suffixes)
 Degrees of Thermal Alteration: The numbers in the classification (e.g., L4, H5) indicate the degree of thermal alteration or metamorphism the meteorite has undergone. Higher numbers suggest more extensive thermal metamorphism, likely from heating events during their space journey or upon entry into Earth's atmosphere.
@@ -78,7 +75,7 @@ Degrees of Thermal Alteration: The numbers in the classification (e.g., L4, H5) 
 Detection and Collection: More common types, like certain chondrites, are often easier to find and identify due to their size, magnetic properties, and distinctive appearance, leading to higher representation in collections.
 Scientific Interest: Some classes may be more represented due to focused scientific interest, leading to more active collection and cataloging efforts.
 #### Conclusion
-The predominance of certain chondrite classes in the dataset reflects both their natural abundance in meteoritic falls and the influence of collection and classification practices. These meteorites offer valuable insights into the early solar system and the dynamic processes that bring these celestial objects to Earth.
+The predominance of certain chondrite classes in the [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) reflects both their natural abundance in meteoritic falls and the influence of collection and classification practices. These meteorites offer valuable insights into the early solar system and the dynamic processes that bring these celestial objects to Earth.
 
 ### Analysis of Meteorite Landings Over Time : Histogram and Line Chart
 - The data shows a significant increase in the number of meteorite landings recorded starting around the 1970s. This coincides with the era of the first human landing on the Moon in 1969, which greatly heightened public and scientific interest in space exploration and celestial phenomena. Advancements in technology and scientific methodologies during this period made the detection and recording of meteorite landings more efficient and widespread.
@@ -112,7 +109,7 @@ The distribution of meteorite findings across continents is influenced by a comp
 
 ### Population Density and Technological Advancement: A Map
 
-The final visualization in the dataset is a map showing the points of recorded asteroid landings and a corresponding density map. This map reveals distinct patterns in asteroid discovery, which can be attributed to several factors:
+The final visualization in the [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) is a map showing the points of recorded asteroid landings and a corresponding density map. This map reveals distinct patterns in asteroid discovery, which can be attributed to several factors:
 
 #### Depending to the population
 - Higher Discoveries in Populated Areas: The map shows a higher concentration of asteroid discoveries in technologically advanced and densely populated regions. This is likely due to the increased likelihood of human observation and reporting in these areas.
@@ -129,7 +126,7 @@ The final visualization in the dataset is a map showing the points of recorded a
 The asteroid discovery points and density map provide a compelling visualization of where asteroid landings have been recorded. The distribution is heavily influenced by human factors such as population density, technological advancement, and scientific interest, as well as by geographical and environmental considerations. This map underscores the interplay between human observation, technological capabilities, and natural occurrences in the documentation of celestial events.
 
 ### Synthesis of Meteorite Landings Data Analysis 
-The Meteorite Landings dataset offers a unique window into the history of celestial encounters with Earth, enriched by diverse data ranging from geographical locations to meteorite classifications. Key insights include the predominance of certain meteorite classes, reflecting both natural abundance and scientific collection biases. The temporal distribution of meteorite landings, particularly the surge post-1969, highlights the impact of technological advancements and growing scientific interest. Geographical trends in discoveries underscore the interplay of environmental conditions, human factors and technological factors, with notable concentrations in regions like Antarctica and Africa. This dataset not only charts the physical journey of these space travelers but also encapsulates humanity's evolving curiosity and engagement with the cosmos.
+The Meteorite Landings [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) offers a unique window into the history of celestial encounters with Earth, enriched by diverse data ranging from geographical locations to meteorite classifications. Key insights include the predominance of certain meteorite classes, reflecting both natural abundance and scientific collection biases. The temporal distribution of meteorite landings, particularly the surge post-1969, highlights the impact of technological advancements and growing scientific interest. Geographical trends in discoveries underscore the interplay of environmental conditions, human factors and technological factors, with notable concentrations in regions like Antarctica and Africa. This [dataset](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) not only charts the physical journey of these space travelers but also encapsulates humanity's evolving curiosity and engagement with the cosmos.
 
 ## Developper guide 🧑‍💻
 
@@ -192,6 +189,8 @@ The `dashboard/` directory is the heart of the application, containing all the D
 
 ## Author ✍️
 #### Nicolas Hameau  
-
+- ![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white) [nicolas.hameau@edu.esiee.fr](mailto:nicolas.hameau@edu.esiee.fr)
+- ![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white) [Nicolas Hameau](http://linkedin.com/in/nicolas-hameau-13242002)
+- ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) [WhiteWall13](https://github.com/WhiteWall13)
 
 

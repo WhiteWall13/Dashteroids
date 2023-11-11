@@ -140,7 +140,6 @@ def draw_bar_country_continent(df: pd.DataFrame, column="continent"):  # country
         return df
 
     df = get_country_continent(df)
-    print(df["continent"].value_counts())
 
     fig = px.histogram(df, x=column, title=f"Number of meteorites by {column}")
     return fig
